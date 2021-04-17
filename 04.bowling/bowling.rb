@@ -37,14 +37,14 @@ frame_number = 0
 max_frame = 9
 frames.each do |f|
   if frame_number < 9
-    point += if frame[0] == 10 && frames[frame_number + 1][0] == 10
+    point += if f[0] == 10 && frames[frame_number + 1][0] == 10
                if frame_number == 8
                  f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][1]
                else
                  f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
                end
              elsif f[0] == 10
-               10 + frames[frame_number + 1][0] + frames[frame_number + 1][1]
+               f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][1]
              elsif f.sum == 10
                f.sum + frames[frame_number + 1][0]
              else
