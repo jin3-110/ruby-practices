@@ -33,12 +33,11 @@ scores.each do |s|
 end
 
 point = 0
-frame_number = 0
-max_frame = 9
-frames.each do |f|
-  if frame_number < 9
+MAX_FRAME = 9
+frames.each_with_index do |f, frame_number|
+  if frame_number < MAX_FRAME
     point += if f[0] == 10 && frames[frame_number + 1][0] == 10
-               if frame_number == 8
+               if frame_number == MAX_FRAME - 1
                  f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][1]
                else
                  f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
@@ -50,9 +49,8 @@ frames.each do |f|
              else
                f.sum
              end
-  elsif frame_number == max_frame
+  elsif frame_number == MAX_FRAME
     point += f.sum
   end
-  frame_number += 1
 end
 puts point
