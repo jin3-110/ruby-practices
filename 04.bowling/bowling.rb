@@ -3,54 +3,43 @@
 
 score = ARGV[0]
 scores = score.split(',')
-frames = []
-frame = []
-frame_count = 1
-throw_count = 1
 
+shots = []
 scores.each do |s|
-  if frame_count < 10
-    if s == 'X'
-      frames << [10]
-      frame_count += 1
-    else
-      frame << s.to_i
-    end
-    if frame.length == 2
-      frames << frame
-      frame = []
-      frame_count += 1
-    end
+  if s == 'X'
+    shots << 10
+    shots << 0
   else
-    frame << if s == 'X'
-               10
-             else
-               s.to_i
-             end
-    frames << frame if scores.length == throw_count
+    shots << s.to_i
   end
-  throw_count += 1
 end
+frames = shots.each_slice(2).to_a
 
 point = 0
-MAX_FRAME = 9
 frames.each_with_index do |f, frame_number|
-  if frame_number < MAX_FRAME
-    point += if f[0] == 10 && frames[frame_number + 1][0] == 10
-               if frame_number == MAX_FRAME - 1
-                 f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][1]
+  # 9フレームまで
+  point += if frame_number < 9
+             # 2連続ストライクの場合
+             if f[0] == 10 && frames[frame_number + 1][0] == 10
+               if frame_number == 8 && frames[frame_number + 1][0] == 10
+                 f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
+               elsif frame_number == 8 && frames[frame_number + 1][0] != 10
+                 f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][0]
                else
                  f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
                end
+             # 1回だけストライク
              elsif f[0] == 10
                f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][1]
+             # スペア
              elsif f.sum == 10
                f.sum + frames[frame_number + 1][0]
              else
                f.sum
              end
-  elsif frame_number == MAX_FRAME
-    point += f.sum
-  end
+           # 10フレーム目から
+           else
+             f.sum
+           end
 end
 puts point
