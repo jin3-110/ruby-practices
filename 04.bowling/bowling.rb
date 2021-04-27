@@ -21,13 +21,7 @@ frames.each_with_index do |f, frame_number|
   point += if frame_number < 9
              # 2連続ストライクの場合
              if f[0] == 10 && frames[frame_number + 1][0] == 10
-               if frame_number == 8 && frames[frame_number + 1][0] == 10
-                 f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
-               elsif frame_number == 8 && frames[frame_number + 1][0] != 10
-                 f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][0]
-               else
-                 f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
-               end
+               f[0] + frames[frame_number + 1][0] + frames[frame_number + 2][0]
              # 1回だけストライク
              elsif f[0] == 10
                f[0] + frames[frame_number + 1][0] + frames[frame_number + 1][1]
